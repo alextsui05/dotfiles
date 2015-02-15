@@ -1,0 +1,20 @@
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
+"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'osyo-manga/vim-marching'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'nosami/Omnisharp'
+Plugin 'Shougo/neosnippet'
+Plugin 'Shougo/neosnippet-snippets'
+Plugin 'justinmk/vim-sneak'
+Plugin 'kien/ctrlp.vim'
+
+call vundle#end()
+filetype plugin indent on
