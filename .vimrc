@@ -87,6 +87,7 @@ map <leader>gf gf:sp<cr><C-W>TgT<C-T>gt:tabmove -1<cr>zR
 "map <leader>bb :b#<cr>
 map <leader>b :CtrlPBuffer<cr>
 map <leader>xp :set paste<cr>i<cr><esc>:LineBreakAt \ <cr>:set nopaste<cr>
+map <leader>cp :let @" = expand("%")<cr>:q<cr>
 set pastetoggle=<leader>pp
 
 "NERDTree bindings
@@ -210,3 +211,6 @@ xmap f <Plug>Sneak_s
 xmap F <Plug>Sneak_S
 omap f <Plug>Sneak_s
 omap F <Plug>Sneak_S
+
+"set wildignore+=*/build/*
+let g:ctrlp_custom_ignore = './build'
