@@ -72,7 +72,7 @@ let mapleader = ","
 map <leader>tn :tabnew<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
-map <leader>wq :wa<cr>:mksession!<cr>:qa<cr> 
+map <leader>ws :wa<cr>:mksession!<cr>
 map <leader>qq :wa<cr>:mksession! ~/.last_vim_session<cr>:qa<cr>
 map <leader>ls :source Session.vim<cr>
 map <leader>ll :source ~/.last_vim_session<cr>
@@ -88,7 +88,12 @@ map <leader>gf gf:sp<cr><C-W>TgT<C-T>gt:tabmove -1<cr>zR
 map <leader>b :CtrlPBuffer<cr>
 map <leader>xp :set paste<cr>i<cr><esc>:LineBreakAt \ <cr>:set nopaste<cr>
 map <leader>cp :let @" = expand("%")<cr>:q<cr>
+map <leader>zc "zyiw
+map <leader>zp "zp
+map <leader>zP "zP
 set pastetoggle=<leader>pp
+
+map <F2> yypw"zPa::<ESC>$xa<CR>{<CR><CR>}<ESC>kkkkdd
 
 "NERDTree bindings
 let g:NERDTreeShowBookmarks = 1
@@ -103,6 +108,8 @@ set scrolloff=5
 "Allow normal up/down movement across wrapped lines
 noremap j gj
 noremap k gk
+map <C-m> [m
+map <C-n> ]m
 
 map <S-TAB> :tabprevious<cr>
 
@@ -127,6 +134,7 @@ au BufRead,BufNewFile *.f set sts=3
 au BufRead,BufNewFile *.f set sw=3
 au BufRead,BufNewFile *.md set filetype=markdown
 au BufRead,BufNewFile *.tex set filetype=tex
+au BufRead,BufNewFile Makefile.inc set filetype=make
 au BufNewFile *Test.cpp :r!cat ~/Templates/FooTest.cpp
 au BufNewFile CMakeLists.txt :r!cat ~/Templates/CMakeLists.txt
 
@@ -161,9 +169,19 @@ let g:marching_include_paths = [
             \ '/usr/include/qt4/QtCore',
             \ '/usr/include/vtk-6.0'
             \]
-if filereadable('./.includes_list')
-    let g:marching_include_paths += readfile('./.includes_list')
+
+
+let s:save_cwd = getcwd()
+let s:tmp_dir = s:save_cwd
+while s:tmp_dir != '/' && !filereadable(s:tmp_dir . "/.includes_list")
+    cd ..
+    let s:tmp_dir = getcwd()
+endwhile
+if filereadable(s:tmp_dir . "/.includes_list")
+    let g:marching_include_paths += readfile(s:tmp_dir . "/.includes_list")
 endif
+exe 'cd' s:save_cwd
+set tags+=../tags,../../tags,../../../tags
 
 let g:marching_enable_neocomplete = 1
 
@@ -212,5 +230,7 @@ xmap F <Plug>Sneak_S
 omap f <Plug>Sneak_s
 omap F <Plug>Sneak_S
 
+
+
 "set wildignore+=*/build/*
-let g:ctrlp_custom_ignore = './build'
+let g:ctrlp_custom_ignore = getcwd() . '/build'
