@@ -1,6 +1,6 @@
 " Place me in $HOME/.config/nvim
 
-"curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" https://github.com/junegunn/vim-plug#installation
 call plug#begin('~/config/nvim/plugged')
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'airblade/vim-gitgutter'
