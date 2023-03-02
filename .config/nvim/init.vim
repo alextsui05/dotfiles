@@ -1,28 +1,16 @@
-call plug#begin('~/.config/nvim/plugged')
-Plug 'kien/ctrlp.vim'
+" Place me in $HOME/.config/nvim
+
+"curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+call plug#begin('~/config/nvim/plugged')
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'Shougo/deoplete.nvim'
-Plug 'Rip-Rip/clang_complete'
 Plug 'justinmk/vim-sneak'
-"Plug 'zchee/deoplete-clang'
-
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 call plug#end()
-set sts=2 " soft tab stop of length 4
-set ts=2 " display tab stop length of 4
-set sw=2 " shift width of 4
-set expandtab
-set nu
-
-"Allow normal up/down movement across wrapped lines
-noremap j gj
-noremap k gk
-map <C-m> [m
-map <C-n> ]m
-
-au BufRead,BufNewFile *.rb set sts=2
-au BufRead,BufNewFile *.rb set sw=2
-au BufRead,BufNewFile *.coffee set sts=2
-au BufRead,BufNewFile *.coffee set sw=2
 
 let mapleader = ","
 map <leader>tn :tabnew<cr>
@@ -49,12 +37,34 @@ map <leader>zp "zp
 map <leader>zP "zP
 set pastetoggle=<leader>pp
 
+"Allow normal up/down movement across wrapped lines
+noremap j gj
+noremap k gk
+map <C-m> [m
+map <C-n> ]m
 
-call deoplete#enable()
-let g:clang_library_path="/usr/lib/llvm-3.8/lib/libclang.so"
+set sts=2 " soft tab stop of length 4
+set ts=2 " display tab stop length of 4
+set sw=2 " shift width of 4
+set expandtab
+set nu
+
+au BufRead,BufNewFile *.coffee set sts=2
+au BufRead,BufNewFile *.coffee set sw=2
+au BufRead,BufNewFile *.py set sts=2
+au BufRead,BufNewFile *.py set sw=2
+au BufRead,BufNewFile *.rb set sts=2
+au BufRead,BufNewFile *.rb set sw=2
+au BufRead,BufNewFile *.tsx set syntax=typescript
 
 autocmd BufWritePre *.rb   :%s/\s\+$//e
 autocmd BufWritePre *.coffee   :%s/\s\+$//e
+autocmd BufWritePre *.py   :%s/\s\+$//e
+autocmd BufWritePre *.go   :%s/\s\+$//e
+autocmd BufWritePre *.js   :%s/\s\+$//e
+autocmd BufWritePre *.json   :%s/\s\+$//e
+autocmd BufWritePre *.tsx   :%s/\s\+$//e
+autocmd BufWritePre *.ts   :%s/\s\+$//e
 
 nmap f <Plug>Sneak_s
 nmap F <Plug>Sneak_S
@@ -62,3 +72,19 @@ xmap f <Plug>Sneak_s
 xmap F <Plug>Sneak_S
 omap f <Plug>Sneak_s
 omap F <Plug>Sneak_S
+
+if exists("g:ctrlp_user_command")
+  unlet g:ctrlp_user_command
+endif
+set wildignore+=node_modules
+set wildignore+=*/tmp/*
+set wildignore+=*/vendor/bundle/*
+let g:ctrlp_max_files=0
+
+" minimap.vim config
+let g:minimap_width = 10
+let g:minimap_auto_start = 1
+let g:minimap_auto_start_win_enter = 1
+let g:minimap_highlight_search = 1
+
+call deoplete#enable()
