@@ -1,0 +1,12 @@
+[commit]
+  gpgsign = true
+  template = ~/.git_commit_message
+[user]
+  signingkey = DXXXXXXXXXXXXXXX
+  name = Alex Tsui
+  email = alextsui@pm.me
+[alias]
+  asdf = "!f(){ git checkout main && git pull origin main ; };f"
+  delete-merged-branches = !"git branch --merged main | grep -v main | grep -v '*' | xargs git branch -d"
+[core]
+  editor = vim
