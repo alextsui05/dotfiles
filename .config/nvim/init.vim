@@ -1,16 +1,18 @@
 " Place me in $HOME/.config/nvim
 
-" https://github.com/junegunn/vim-plug#installation
+"curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 call plug#begin('~/config/nvim/plugged')
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'Shougo/deoplete.nvim'
 Plug 'justinmk/vim-sneak'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'sainnhe/sonokai'
 call plug#end()
+colorscheme sonokai
 
 let mapleader = ","
 map <leader>tn :tabnew<cr>
@@ -31,11 +33,12 @@ map <leader>gf gf:sp<cr><C-W>TgT<C-T>gt:tabmove -1<cr>zR
 "map <leader>bb :b#<cr>
 map <leader>b :CtrlPBuffer<cr>
 map <leader>xp :set paste<cr>i<cr><esc>:LineBreakAt \ <cr>:set nopaste<cr>
+map <leader>xs :%s/\s\+$//e
 map <leader>cp :let @" = expand("%")<cr>:q<cr>
 map <leader>zc "zyiw
 map <leader>zp "zp
 map <leader>zP "zP
-set pastetoggle=<leader>pp
+"set pastetoggle=<leader>pp
 
 "Allow normal up/down movement across wrapped lines
 noremap j gj
@@ -55,16 +58,23 @@ au BufRead,BufNewFile *.py set sts=2
 au BufRead,BufNewFile *.py set sw=2
 au BufRead,BufNewFile *.rb set sts=2
 au BufRead,BufNewFile *.rb set sw=2
+"au BufRead,BufNewFile *.rb set syntax=ruby
+au BufRead,BufNewFile *.thor set sts=2
+au BufRead,BufNewFile *.thor set sw=2
+au BufRead,BufNewFile *.thor set filetype=ruby
 au BufRead,BufNewFile *.tsx set syntax=typescript
+au BufRead,BufNewFile *.haml set syntax=off
 
 autocmd BufWritePre *.rb   :%s/\s\+$//e
 autocmd BufWritePre *.coffee   :%s/\s\+$//e
+autocmd BufWritePre *.erb   :%s/\s\+$//e
 autocmd BufWritePre *.py   :%s/\s\+$//e
 autocmd BufWritePre *.go   :%s/\s\+$//e
 autocmd BufWritePre *.js   :%s/\s\+$//e
 autocmd BufWritePre *.json   :%s/\s\+$//e
 autocmd BufWritePre *.tsx   :%s/\s\+$//e
 autocmd BufWritePre *.ts   :%s/\s\+$//e
+autocmd BufWritePre *.yml   :%s/\s\+$//e
 
 nmap f <Plug>Sneak_s
 nmap F <Plug>Sneak_S
@@ -76,6 +86,11 @@ omap F <Plug>Sneak_S
 if exists("g:ctrlp_user_command")
   unlet g:ctrlp_user_command
 endif
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+if executable('ag')
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+" let g:ctrlp_user_command = 'find %s -type f | grep -v -P "\.jpg$|/tmp/"'
 set wildignore+=node_modules
 set wildignore+=*/tmp/*
 set wildignore+=*/vendor/bundle/*
@@ -87,4 +102,14 @@ let g:minimap_auto_start = 1
 let g:minimap_auto_start_win_enter = 1
 let g:minimap_highlight_search = 1
 
-call deoplete#enable()
+lua << EOF 
+require'nvim-treesitter.configs'.setup {
+  -- ensure_installed = "all",
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "ruby", "yaml", "go", "python", "json", "terraform", "bash", "javascript" },
+  sync_install = false,
+  auto_install = false,
+  highlight = {
+    enable = true,
+  },
+}
+EOF
